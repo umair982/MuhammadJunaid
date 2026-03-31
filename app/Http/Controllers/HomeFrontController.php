@@ -2,23 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Education;
 use App\Models\Profile;
 use App\Models\Skill;
 use App\Models\SocialLink;
 use Illuminate\Http\Request;
 
-class HomeController extends Controller
+class HomeFrontController extends Controller
 {
     /**
      * Create a new controller instance.
      *
      * @return void
      */
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
+
 
     /**
      * Show the application dashboard.
@@ -28,9 +24,9 @@ class HomeController extends Controller
     public function index()
     {
         $profile = Profile::first();
-        $skills = Skill::all();
-        $educations = Education::all();
-        $socials=SocialLink::all();
-        return view('admin.home', compact('profile', 'skills', 'educations', 'socials'));
+        $skills = Skill::pluck('name');
+        $socials = SocialLink::all();
+
+        return view('homefront', compact('profile', 'skills', 'socials'));
     }
 }
