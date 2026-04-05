@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('skills', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // Skill name
-            $table->tinyInteger('level')->default(0); // e.g., 0-100%
+            $table->foreignId('category_id')->constrained('skill_categories')->onDelete('cascade');
+            $table->string('name');       // e.g., PHOTOSHOP, HTML
+            $table->integer('level')->default(0); // 0-100%
+            $table->integer('animation_order')->default(1); // for frontend wow animation
             $table->timestamps();
         });
     }

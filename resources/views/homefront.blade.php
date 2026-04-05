@@ -178,19 +178,31 @@
                     <div class="col-lg-6 order-lg-2">
                         <div class="banner-right-content">
                             <div class="main-img">
+
+                                {{-- MAIN PROFILE IMAGE --}}
                                 <img class="tmp-scroll-trigger tmp-zoom-in animation-order-1"
-                                    src="assets/images/banner/banner-user-image-two.png" alt="banner-img">
-                                <h2 class="banner-big-text-1 up-down-2">Ux Designer</h2>
-                                <h2 class="banner-big-text-2 up-down">Ux Designer</h2>
+                                    src="{{ !empty($profile->profile_image) ? asset($profile->profile_image) : asset('assets/images/banner/banner-user-image-two.png') }}"
+                                    alt="banner-img">
+
+
+
+                                <h2 class="banner-big-text-2 up-down">
+                                    {{ $profile->title ?? 'Ux Designer' }}
+                                </h2>
+
+                                {{-- RED BACKGROUND IMAGE (OPTIONAL USE banner_image) --}}
                                 <div class="benner-two-bg-red-img">
-                                    <img src="assets/images/banner/banner-user-image-two-red-bg.png" alt="red-img">
+                                    <img src="{{ !empty($profile->banner_image) ? asset($profile->banner_image) : asset('assets/images/banner/banner-user-image-two-red-bg.png') }}"
+                                        alt="red-img">
                                 </div>
+
+                                {{-- STATIC (OPTIONAL KEEP STATIC) --}}
                                 <div class="logo-under-img-wrap">
                                     <div class="logo-under-img">
-                                        <img src="assets/images/banner/logo-under-image.png" alt="logo-under-image">
+                                        <img src="{{ asset('assets/images/banner/logo-under-image.png') }}" alt="logo">
                                     </div>
                                     <div class="logo-under-img-2">
-                                        <img src="assets/images/banner/logo-under-image-2.png" alt="logo-under-image">
+                                        <img src="{{ asset('assets/images/banner/logo-under-image-2.png') }}" alt="logo">
                                     </div>
                                 </div>
 
@@ -210,7 +222,7 @@
                                             @if($skills->count())
                                             @foreach($skills as $index => $skill)
                                             <b class="{{ $index == 0 ? 'is-visible' : 'is-hidden' }} theme-gradient">
-                                                {{ $skill }}
+                                                {{ $skill->name }}
                                             </b>
                                             @endforeach
                                             @else
@@ -368,70 +380,45 @@
     <section class="resume-section tmp-section-gapTop" id="resume-section">
         <div class="container">
             <div class="row">
+                {{-- ================= EXPERIENCE ================= --}}
                 <div class="col-md-6">
                     <div class="section-header mb--50 tmp-scroll-trigger tmp-fade-in animation-order-1">
                         <h2 class="section-title"><i class="fa-regular fa-award"></i> My Experience</h2>
                     </div>
 
                     <div class="resume-widget">
-                        <div class="resume-single tmp-scroll-trigger tmp-fade-in animation-order-1">
-                            <div class="time"><i class="fa-duotone fa-solid fa-circle-dot fa-fade mr--15"></i> 2022 -
-                                Present</div>
-                            <h3 class="resume-title">Senior Developer</h3>
-                            <div class="institute">CodeGenius (USA)</div>
+                        @foreach($experiences as $index => $exp)
+                        <div class="resume-single tmp-scroll-trigger tmp-fade-in animation-order-{{ $index + 1 }}">
+                            <div class="time">
+                                <i class="fa-duotone fa-solid fa-circle-dot fa-fade mr--15"></i>
+                                {{ $exp->start_year }} - {{ $exp->currently_working ? 'Present' : $exp->end_year }}
+                            </div>
+                            <h3 class="resume-title">{{ $exp->title }}</h3>
+                            <div class="institute">{{ $exp->company }}</div>
                         </div>
-                        <div class="resume-single tmp-scroll-trigger tmp-fade-in animation-order-2">
-                            <div class="time"><i class="fa-duotone fa-solid fa-circle-dot fa-fade mr--15"></i> 2022 -
-                                2022</div>
-                            <h3 class="resume-title">Web Developer</h3>
-                            <div class="institute">Modarni Tomoli</div>
-                        </div>
-                        <div class="resume-single tmp-scroll-trigger tmp-fade-in animation-order-3">
-                            <div class="time"><i class="fa-duotone fa-solid fa-circle-dot fa-fade mr--15"></i> 2020 -
-                                2022</div>
-                            <h3 class="resume-title">UI Designer</h3>
-                            <div class="institute">Tech Design Company</div>
-                        </div>
-                        <div class="resume-single mb--0 tmp-scroll-trigger tmp-fade-in animation-order-4">
-                            <div class="time"><i class="fa-duotone fa-solid fa-circle-dot fa-fade mr--15"></i> 2016 -
-                                2019</div>
-                            <h3 class="resume-title">Intern UI/UX Designer</h3>
-                            <div class="institute">USA Web Company</div>
-                        </div>
+                        @endforeach
                     </div>
                 </div>
 
+                {{-- ================= EDUCATION ================= --}}
                 <div class="col-md-6">
                     <div class="section-header mb--50 tmp-scroll-trigger tmp-fade-in animation-order-1">
-                        <h2 class="section-title"> <i class="fa-regular fa-graduation-cap"></i> My Education</h2>
+                        <h2 class="section-title"><i class="fa-regular fa-graduation-cap"></i> My Education</h2>
                     </div>
 
                     <div class="resume-widget">
-                        <div class="resume-single tmp-scroll-trigger tmp-fade-in animation-order-1">
-                            <div class="time"><i class="fa-duotone fa-solid fa-circle-dot fa-fade mr--15"></i> 2020 -
-                                2023</div>
-                            <h3 class="resume-title">Programming course</h3>
-                            <div class="institute">Harverd University</div>
+                        @foreach($educations as $index => $edu)
+                        <div class="resume-single tmp-scroll-trigger tmp-fade-in animation-order-{{ $index + 1 }}">
+                            <div class="time">
+                                <i class="fa-duotone fa-solid fa-circle-dot fa-fade mr--15"></i>
+                                {{ $edu->year ?? 'N/A' }}
+                            </div>
+                            <h3 class="resume-title">{{ $edu->degree }}</h3>
+                            <div class="institute">{{ $edu->institute ?? '' }}</div>
                         </div>
-                        <div class="resume-single tmp-scroll-trigger tmp-fade-in animation-order-2">
-                            <div class="time"><i class="fa-duotone fa-solid fa-circle-dot fa-fade mr--15"></i> 2016 -
-                                2020</div>
-                            <h3 class="resume-title">Graphic design course</h3>
-                            <div class="institute">University of Denmark</div>
-                        </div>
-                        <div class="resume-single tmp-scroll-trigger tmp-fade-in animation-order-3">
-                            <div class="time"><i class="fa-duotone fa-solid fa-circle-dot fa-fade mr--15"></i> 2012 -
-                                2015</div>
-                            <h3 class="resume-title">Web design course</h3>
-                            <div class="institute">University of California</div>
-                        </div>
-                        <div class="resume-single mb--0 tmp-scroll-trigger tmp-fade-in animation-order-4">
-                            <div class="time"><i class="fa-duotone fa-solid fa-circle-dot fa-fade mr--15"></i> 2010 -
-                                2011</div>
-                            <h3 class="resume-title">Design &amp; Technology</h3>
-                            <div class="institute">Parsons, The New School</div>
-                        </div>
+                        @endforeach
                     </div>
+                </div>
                 </div>
             </div>
         </div>
@@ -441,146 +428,33 @@
     <div class="tmp-skill-area tmp-section-gapTop">
         <div class="container">
             <div class="row g-5">
+                @foreach($categories as $category)
                 <div class="col-lg-6">
                     <div class="progress-wrapper">
                         <div class="content">
                             <h2 class="custom-title mb--30 tmp-scroll-trigger tmp-fade-in animation-order-1">
-                                Design Skill <span><img src="assets/images/custom-line/custom-line.png"
-                                        alt="custom-line"></span>
+                                {{ $category->name }}
+                                <span><img src="assets/images/custom-line/custom-line.png" alt="custom-line"></span>
                             </h2>
-                            <!-- Start Single Progress Charts -->
-                            <div class="progress-charts">
-                                <h6 class="heading heading-h6">
-                                    PHOTOSHOT</h6>
-                                <div class="progress">
-                                    <div class="progress-bar wow fadeInLeft" data-wow-duration="0.5s" data-wow-delay=".3s"
-                                        role="progressbar"
-                                        style="width: 100%; visibility: visible; animation-duration: 0.5s; animation-delay: 0.3s; animation-name: fadeInLeft;"
-                                        aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
-                                        <span class="percent-label">100%</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Progress Charts -->
 
-                            <!-- Start Single Progress Charts -->
+                            @foreach($category->skills as $skill)
                             <div class="progress-charts">
-                                <h6 class="heading heading-h6">
-                                    FIGMA</h6>
+                                <h6 class="heading heading-h6">{{ $skill->name }}</h6>
                                 <div class="progress">
-                                    <div class="progress-bar wow fadeInLeft" data-wow-duration="0.6s" data-wow-delay=".4s"
-                                        role="progressbar"
-                                        style="width: 95%; visibility: visible; animation-duration: 0.6s; animation-delay: 0.4s; animation-name: fadeInLeft;"
-                                        aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
-                                        <span class="percent-label">95%</span>
+                                    <div class="progress-bar wow fadeInLeft" data-wow-duration="0.5s"
+                                        data-wow-delay=".{{ $skill->animation_order ?? 3 }}s" role="progressbar"
+                                        style="width: {{ $skill->level }}%;" aria-valuenow="{{ $skill->level }}"
+                                        aria-valuemin="0" aria-valuemax="100">
+                                        <span class="percent-label">{{ $skill->level }}%</span>
                                     </div>
                                 </div>
                             </div>
-                            <!-- End Single Progress Charts -->
-
-                            <!-- Start Single Progress Charts -->
-                            <div class="progress-charts">
-                                <h6 class="heading heading-h6">
-                                    ADOBE XD</h6>
-                                <div class="progress">
-                                    <div class="progress-bar wow fadeInLeft" data-wow-duration="0.7s" data-wow-delay=".5s"
-                                        role="progressbar"
-                                        style="width: 60%; visibility: visible; animation-duration: 0.7s; animation-delay: 0.5s; animation-name: fadeInLeft;"
-                                        aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
-                                        <span class="percent-label">60%</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Progress Charts -->
-
-                            <!-- Start Single Progress Charts -->
-                            <div class="progress-charts">
-                                <h6 class="heading heading-h6">
-                                    ADOBE ILLUSTRATOR</h6>
-                                <div class="progress">
-                                    <div class="progress-bar wow fadeInLeft" data-wow-duration="0.8s" data-wow-delay=".6s"
-                                        role="progressbar"
-                                        style="width: 70%; visibility: visible; animation-duration: 0.8s; animation-delay: 0.6s; animation-name: fadeInLeft;"
-                                        aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
-                                        <span class="percent-label">70%</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Progress Charts -->
+                            @endforeach
 
                         </div>
                     </div>
                 </div>
-                <div class="col-lg-6">
-                    <div class="progress-wrapper">
-                        <div class="content">
-                            <h2 class="custom-title mb--30 tmp-scroll-trigger tmp-fade-in animation-order-1">
-                                Development Skill <span><img src="assets/images/custom-line/custom-line.png"
-                                        alt="custom-line"></span>
-                            </h2>
-                            <!-- Start Single Progress Charts -->
-                            <div class="progress-charts">
-                                <h6 class="heading heading-h6">
-                                    HTML</h6>
-                                <div class="progress">
-                                    <div class="progress-bar wow fadeInLeft" data-wow-duration="0.5s" data-wow-delay=".3s"
-                                        role="progressbar"
-                                        style="width: 100%; visibility: visible; animation-duration: 0.5s; animation-delay: 0.3s; animation-name: fadeInLeft;"
-                                        aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
-                                        <span class="percent-label">100%</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Progress Charts -->
-
-                            <!-- Start Single Progress Charts -->
-                            <div class="progress-charts">
-                                <h6 class="heading heading-h6">
-                                    CSS</h6>
-                                <div class="progress">
-                                    <div class="progress-bar wow fadeInLeft" data-wow-duration="0.6s" data-wow-delay=".4s"
-                                        role="progressbar"
-                                        style="width: 95%; visibility: visible; animation-duration: 0.6s; animation-delay: 0.4s; animation-name: fadeInLeft;"
-                                        aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
-                                        <span class="percent-label">95%</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Progress Charts -->
-
-                            <!-- Start Single Progress Charts -->
-                            <div class="progress-charts">
-                                <h6 class="heading heading-h6">
-                                    Javascript</h6>
-                                <div class="progress">
-                                    <div class="progress-bar wow fadeInLeft" data-wow-duration="0.7s" data-wow-delay=".5s"
-                                        role="progressbar"
-                                        style="width: 60%; visibility: visible; animation-duration: 0.7s; animation-delay: 0.5s; animation-name: fadeInLeft;"
-                                        aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
-                                        <span class="percent-label">60%</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Progress Charts -->
-
-                            <!-- Start Single Progress Charts -->
-                            <div class="progress-charts">
-                                <h6 class="heading heading-h6">
-                                    Wordpress</h6>
-                                <div class="progress">
-                                    <div class="progress-bar wow fadeInLeft" data-wow-duration="0.8s" data-wow-delay=".6s"
-                                        role="progressbar"
-                                        style="width: 70%; visibility: visible; animation-duration: 0.8s; animation-delay: 0.6s; animation-name: fadeInLeft;"
-                                        aria-valuenow="85" aria-valuemin="0" aria-valuemax="100">
-                                        <span class="percent-label">70%</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- End Single Progress Charts -->
-
-                        </div>
-                    </div>
-                </div>
+                @endforeach
             </div>
         </div>
     </div>

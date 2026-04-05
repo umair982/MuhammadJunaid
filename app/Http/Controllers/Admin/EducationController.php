@@ -10,33 +10,35 @@ class EducationController extends Controller
 {
     public function index()
     {
-        return redirect()->route('admin.home');
+        return redirect()->route('admin.dashboard');
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
             'degree' => 'required|string|max:255',
-            'institute' => 'required|string|max:255',
-            'year' => 'required|string|max:100',
+            'institute' => 'nullable|string|max:255',
+            'year' => 'nullable|string|max:50',
+            'description' => 'nullable|string'
         ]);
 
         Education::create($data);
 
-        return redirect()->back()->with('success', 'Education added');
+        return back()->with('success', 'Education added');
     }
 
     public function update(Request $request, Education $education)
     {
         $data = $request->validate([
             'degree' => 'required|string|max:255',
-            'institute' => 'required|string|max:255',
-            'year' => 'required|string|max:100',
+            'institute' => 'nullable|string|max:255',
+            'year' => 'nullable|string|max:50',
+            'description' => 'nullable|string'
         ]);
 
         $education->update($data);
 
-        return redirect()->back()->with('success', 'Education updated');
+        return back()->with('success', 'Education updated');
     }
 
     public function destroy(Education $education)

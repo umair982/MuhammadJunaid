@@ -18,6 +18,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->string('profile_image')->nullable();
             $table->string('banner_image')->nullable();
+            $table->string('logo_under_image')->nullable();
+            $table->string('logo_under_image_2')->nullable();
             $table->string('link')->nullable();
             $table->timestamps();
         });

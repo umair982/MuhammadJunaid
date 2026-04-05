@@ -11,8 +11,9 @@ class Education extends Model
 
     protected $fillable = [
         'degree',
-        'institution',
+        'institute',
         'duration',
         'description',
+        'year'
     ];
 }

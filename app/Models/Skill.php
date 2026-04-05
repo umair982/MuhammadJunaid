@@ -9,8 +9,10 @@ class Skill extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'name',
-        'level',
-    ];
+    protected $fillable = ['category_id', 'name', 'level', 'animation_order'];
+
+    public function category()
+    {
+        return $this->belongsTo(SkillCategory::class, 'category_id');
+    }
 }

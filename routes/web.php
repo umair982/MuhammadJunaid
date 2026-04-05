@@ -1,7 +1,9 @@
 <?php
 
 use App\Http\Controllers\Admin\EducationController;
+use App\Http\Controllers\Admin\ExperienceController;
 use App\Http\Controllers\Admin\ProfileController;
+use App\Http\Controllers\Admin\SkillCategoryController;
 use App\Http\Controllers\Admin\SkillController;
 use App\Http\Controllers\Admin\SocialLinkController;
 use App\Http\Controllers\HomeController;
@@ -18,15 +20,26 @@ use Illuminate\Support\Facades\Route;
 Auth::routes();
 
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('fronthome');
-Route::middleware('auth')->prefix('admin')->name('admin.')->group(function () {
+Route::prefix('admin')->middleware('auth')->name('admin.')->group(function () {
 
-    Route::get('/', [HomeController::class, 'index'])->name('home');
+    // Profile
+    Route::get('/dashboard', [ProfileController::class, 'index'])->name('dashboard');
+    Route::post('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
-    Route::post('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    // Skill Categories
+    Route::resource('skill-categories', SkillCategoryController::class)->except(['show', 'edit']);
 
-    Route::resource('skills', SkillController::class);
-    Route::resource('educations', EducationController::class);
-    Route::resource('socials', SocialLinkController::class);
+    // Skills
+    Route::resource('skills', SkillController::class)->except(['show', 'edit']);
+
+    // Education
+    Route::resource('educations', EducationController::class)->except(['show', 'create', 'edit']);
+
+    // Experience
+    Route::resource('experiences', ExperienceController::class)->except(['show', 'create', 'edit']);
+
+    // Socials
+    Route::resource('socials', SocialLinkController::class)->except(['show', 'create', 'edit']);
 });
 
 Route::get('/run-fresh-migrations', function () {
