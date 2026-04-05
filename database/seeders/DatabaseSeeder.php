@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
             ProfileSeeder::class,
             //SkillSeeder::class,
             SocialLinkSeeder::class,
+            AboutSeeder::class
         ]);
     }
 }

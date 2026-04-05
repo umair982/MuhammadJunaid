@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AboutCounter;
+use App\Models\AboutSection;
 use App\Models\Education;
 use App\Models\Experience;
+use App\Models\Portfolio;
+use App\Models\PortfolioCategory;
 use App\Models\Profile;
 use App\Models\Skill;
 use App\Models\SkillCategory;
@@ -35,14 +39,21 @@ class HomeController extends Controller
         $socials=SocialLink::all();
         $experiences = Experience::all();
         $categories=SkillCategory::all();
-
+        $counters=AboutCounter::all();
+        $aboutSection=AboutSection::first();
+        $portfolioCategories=PortfolioCategory::all();
+        $portfolios=Portfolio::all();
         return view('admin.home', compact(
             'profile',
+            'portfolios',
             'skills',
+            'portfolioCategories',
             'categories',
             'educations',
             'experiences', // 👈 add this
-            'socials'
+            'socials',
+            'counters',
+            'aboutSection'
         ));
     }
 }

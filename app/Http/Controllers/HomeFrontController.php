@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\AboutCounter;
+use App\Models\AboutSection;
 use App\Models\Education;
 use App\Models\Experience;
+use App\Models\Portfolio;
+use App\Models\PortfolioCategory;
 use App\Models\Profile;
 use App\Models\Skill;
 use App\Models\SkillCategory;
@@ -37,7 +41,12 @@ class HomeFrontController extends Controller
 
         $socials = SocialLink::all();
         $categories=SkillCategory::all();
+        $counters=AboutCounter::all();
+        $aboutSection=AboutSection::get()->first();
 
-        return view('homefront', compact('profile', 'categories', 'skills', 'experiences', 'educations', 'socials'));
+        $categories = PortfolioCategory::with('portfolios')->get();
+        $portfolios = Portfolio::with('category')->get();
+
+        return view('homefront', compact('profile','categories','portfolios', 'aboutSection','counters', 'categories', 'skills', 'experiences', 'educations', 'socials'));
     }
 }

@@ -144,6 +144,137 @@
             </form>
         </div>
 
+
+        <div class="card mb-4 p-4">
+            <h4 class="mb-3">About Section</h4>
+
+            <form method="POST" action="{{ route('admin.about-section.update', $aboutSection->id ?? 1) }}">
+                @csrf
+
+
+                <div class="mb-3">
+                    <label>Subtitle</label>
+                    <input type="text" name="subtitle" class="form-control" value="{{ $aboutSection->subtitle ?? '' }}">
+                </div>
+
+                <div class="mb-3">
+                    <label>Title (HTML allowed)</label>
+                    <textarea name="title" class="form-control" rows="3">{{ $aboutSection->title ?? '' }}</textarea>
+                </div>
+
+                <div class="mb-3">
+                    <label>Description</label>
+                    <textarea name="description" class="form-control" rows="3">{{ $aboutSection->description ?? '' }}</textarea>
+                </div>
+
+                <button class="btn btn-primary">Update About Section</button>
+            </form>
+        </div>
+
+
+
+        <div class="card mb-4 p-4">
+            <h4 class="mb-3">About Counters</h4>
+
+            {{-- ADD FORM --}}
+            {{-- <form method="POST" action="{{ route('admin.about-counter.store') }}" class="row mb-4">
+                @csrf
+
+                <div class="col-md-3">
+                    <input type="text" name="title" class="form-control" placeholder="Title (e.g Years Experience)" required>
+                </div>
+
+                <div class="col-md-2">
+                    <input type="number" name="count" class="form-control" placeholder="Count" required>
+                </div>
+
+                <div class="col-md-2">
+                    <input type="text" name="suffix" class="form-control" placeholder="+ / %">
+                </div>
+
+                <div class="col-md-2">
+                    <input type="number" name="order" class="form-control" placeholder="Order">
+                </div>
+
+                <div class="col-md-3">
+                    <button class="btn btn-success w-100">Add Counter</button>
+                </div>
+            </form> --}}
+
+            {{-- TABLE --}}
+            <table class="table">
+                <tr>
+                    <th>Title</th>
+                    <th>Count</th>
+                    <th>Suffix</th>
+                    <th>Order</th>
+                    <th>Action</th>
+                </tr>
+
+                @foreach($counters as $counter)
+                <tr>
+                    <td>{{ $counter->title }}</td>
+                    <td>{{ $counter->count }}</td>
+                    <td>{{ $counter->suffix }}</td>
+                    <td>{{ $counter->order }}</td>
+                    <td>
+
+                        {{-- EDIT BUTTON --}}
+                        <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                            data-bs-target="#editCounter{{ $counter->id }}">
+                            Edit
+                        </button>
+
+                        {{-- DELETE --}}
+                        <form method="POST" action="{{ route('admin.about-counter.destroy', $counter->id) }}"
+                            style="display:inline;">
+                            @csrf @method('DELETE')
+                            <button class="btn btn-danger btn-sm">Delete</button>
+                        </form>
+
+                        {{-- EDIT MODAL --}}
+                        <div class="modal fade" id="editCounter{{ $counter->id }}">
+                            <div class="modal-dialog">
+                                <form method="POST" action="{{ route('admin.about-counter.update', $counter->id) }}">
+                                    @csrf @method('PUT')
+
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5>Edit Counter</h5>
+                                            <button class="btn-close" data-bs-dismiss="modal"></button>
+                                        </div>
+
+                                        <div class="modal-body">
+
+                                            <input type="text" name="title" value="{{ $counter->title }}"
+                                                class="form-control mb-2" required>
+
+                                            <input type="number" name="count" value="{{ $counter->count }}"
+                                                class="form-control mb-2" required>
+
+                                            <input type="text" name="suffix" value="{{ $counter->suffix }}"
+                                                class="form-control mb-2">
+
+                                            <input type="number" name="order" value="{{ $counter->order }}"
+                                                class="form-control">
+
+                                        </div>
+
+                                        <div class="modal-footer">
+                                            <button class="btn btn-primary">Update</button>
+                                        </div>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+
+                    </td>
+                </tr>
+                @endforeach
+            </table>
+        </div>
+
         {{-- ================= SKILLS WITH CATEGORIES ================= --}}
         <div id="skills" class="card mb-4 p-4">
             <h4 class="mb-3">Skills & Categories</h4>
@@ -501,6 +632,160 @@
                     </td>
                 </tr>
                 @endforeach
+            </table>
+        </div>
+
+
+
+        {{-- ================= PORTFOLIO ================= --}}
+        <div id="portfolio" class="card mb-4 p-4">
+            <h4 class="mb-3">Portfolio Management</h4>
+
+            {{-- ===== CATEGORY ADD ===== --}}
+            <form method="POST" action="{{ route('admin.portfolio-categories.store') }}" class="row mb-4">
+                @csrf
+                <div class="col-md-6">
+                    <input type="text" name="name" class="form-control" placeholder="Category Name" required>
+                </div>
+                <div class="col-md-2">
+                    <button class="btn btn-success w-100">Add Category</button>
+                </div>
+            </form>
+
+            {{-- ===== CATEGORY LIST ===== --}}
+            <div class="mb-4">
+                @foreach($portfolioCategories as $cat)
+                <span class="badge bg-dark me-2">
+                    {{ $cat->name }}
+                    <form method="POST" action="{{ route('admin.portfolio-categories.destroy', $cat->id) }}"
+                        style="display:inline;">
+                        @csrf @method('DELETE')
+                        <button class="btn btn-sm text-white ms-1">×</button>
+                    </form>
+                </span>
+                @endforeach
+            </div>
+
+            {{-- ===== ADD PORTFOLIO ===== --}}
+            <form method="POST" action="{{ route('admin.portfolios.store') }}" enctype="multipart/form-data" class="row mb-4">
+                @csrf
+
+                <div class="col-md-3">
+                    <input type="text" name="title" class="form-control" placeholder="Project Title" required>
+                </div>
+
+                <div class="col-md-3">
+                    <select name="category_id" class="form-control" required>
+                        <option value="">Select Category</option>
+                        @foreach($portfolioCategories as $cat)
+                        <option value="{{ $cat->id }}">{{ $cat->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <input type="text" name="tags" class="form-control" placeholder="Tags (comma)">
+                </div>
+
+                <div class="col-md-2">
+                    <input type="file" name="image" class="form-control">
+                </div>
+
+                <div class="col-md-2">
+                    <input type="url" name="url" class="form-control" placeholder="Project URL" required>
+                </div>
+
+                <div class="col-md-12 mt-2">
+                    <button class="btn btn-success">Add Portfolio</button>
+                </div>
+            </form>
+
+            {{-- ===== PORTFOLIO TABLE ===== --}}
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Tags</th>
+                        <th>URL</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach($portfolios as $item)
+                    <tr>
+                        <td><img src="{{ asset($item->image) }}" width="80" class="rounded"></td>
+                        <td>{{ $item->title }}</td>
+                        <td>{{ $item->category->name ?? '' }}</td>
+                        <td>{{ $item->tags }}</td>
+                        <td>
+                            <a href="{{ $item->url }}" target="_blank">{{ $item->url }}</a>
+                        </td>
+                        <td>
+
+                            {{-- EDIT --}}
+                            <button class="btn btn-primary btn-sm" data-bs-toggle="modal"
+                                data-bs-target="#editPortfolio{{ $item->id }}">
+                                Edit
+                            </button>
+
+                            {{-- DELETE --}}
+                            <form method="POST" action="{{ route('admin.portfolios.destroy', $item->id) }}"
+                                style="display:inline;">
+                                @csrf @method('DELETE')
+                                <button class="btn btn-danger btn-sm">Delete</button>
+                            </form>
+
+                            {{-- EDIT MODAL --}}
+                            <div class="modal fade" id="editPortfolio{{ $item->id }}">
+                                <div class="modal-dialog">
+                                    <form method="POST" action="{{ route('admin.portfolios.update', $item->id) }}"
+                                        enctype="multipart/form-data">
+                                        @csrf @method('PUT')
+
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5>Edit Portfolio</h5>
+                                                <button class="btn-close" data-bs-dismiss="modal"></button>
+                                            </div>
+
+                                            <div class="modal-body">
+                                                <input type="text" name="title" value="{{ $item->title }}"
+                                                    class="form-control mb-2" required>
+
+                                                <select name="category_id" class="form-control mb-2" required>
+                                                    @foreach($portfolioCategories as $cat)
+                                                    <option value="{{ $cat->id }}" {{ $cat->id == $item->category_id ?
+                                                        'selected' : '' }}>
+                                                        {{ $cat->name }}
+                                                    </option>
+                                                    @endforeach
+                                                </select>
+
+                                                <input type="text" name="tags" value="{{ $item->tags }}"
+                                                    class="form-control mb-2">
+
+                                                <input type="file" name="image" class="form-control mb-2">
+                                                <img src="{{ asset($item->image) }}" width="100" class="rounded mb-2">
+
+                                                <input type="url" name="url" value="{{ $item->url }}" class="form-control"
+                                                    placeholder="Project URL" required>
+                                            </div>
+
+                                            <div class="modal-footer">
+                                                <button class="btn btn-primary">Update</button>
+                                            </div>
+                                        </div>
+
+                                    </form>
+                                </div>
+                            </div>
+
+                        </td>
+                    </tr>
+                    @endforeach
+                </tbody>
             </table>
         </div>
 
